@@ -29,6 +29,56 @@
 
       <div class="card">
         <div class="card-header">
+          <h3 class="card-title">{{ t('orders.submittedOrders') }} ({{ restockOrders.length }})</h3>
+        </div>
+        <div v-if="restockOrdersLoading" class="loading">{{ t('common.loading') }}</div>
+        <div v-else-if="restockOrders.length === 0" class="empty-state">
+          {{ t('orders.noRestockOrders') }}
+        </div>
+        <div v-else class="table-container">
+          <table class="restock-orders-table">
+            <thead>
+              <tr>
+                <th>{{ t('orders.table.orderNumber') }}</th>
+                <th>{{ t('orders.table.items') }}</th>
+                <th>{{ t('orders.table.status') }}</th>
+                <th>{{ t('orders.table.submittedDate') }}</th>
+                <th>{{ t('orders.table.leadTime') }}</th>
+                <th>{{ t('orders.table.totalCost') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="restockOrder in restockOrders" :key="restockOrder.id">
+                <td><strong>{{ restockOrder.order_number }}</strong></td>
+                <td>
+                  <details class="items-details">
+                    <summary class="items-summary">
+                      {{ t('orders.itemsCount', { count: restockOrder.items.length }) }}
+                    </summary>
+                    <div class="items-dropdown">
+                      <div v-for="restockItem in restockOrder.items" :key="restockItem.sku" class="item-entry">
+                        <span class="item-name">{{ translateProductName(restockItem.name) }}</span>
+                        <span class="item-meta">{{ t('orders.quantity') }}: {{ restockItem.quantity }} @ {{ currencySymbol }}{{ restockItem.unit_cost }}</span>
+                      </div>
+                    </div>
+                  </details>
+                </td>
+                <td>
+                  <span :class="['badge', getOrderStatusClass(restockOrder.status)]">
+                    {{ t(`status.${restockOrder.status.toLowerCase()}`) }}
+                  </span>
+                </td>
+                <td>{{ formatDate(restockOrder.submitted_date) }}</td>
+                <td>{{ t('orders.leadTimeDays', { days: restockOrder.lead_time_days }) }} &bull; {{ formatDate(restockOrder.expected_delivery) }}</td>
+                <td><strong>{{ currencySymbol }}{{ restockOrder.total_cost.toLocaleString() }}</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
           <h3 class="card-title">{{ t('orders.allOrders') }} ({{ orders.length }})</h3>
         </div>
         <div class="table-container">
@@ -96,6 +146,12 @@ export default {
     const error = ref(null)
     const orders = ref([])
 
+    // Restock orders are independent of the global filter bar (same reasoning as the
+    // Restocking view - budget-driven, not filterable by warehouse/category/status/period),
+    // so they get their own loading state rather than sharing `loading` above.
+    const restockOrdersLoading = ref(true)
+    const restockOrders = ref([])
+
     // Use shared filters
     const {
       selectedPeriod,
@@ -129,6 +185,17 @@ export default {
       loadOrders()
     })
 
+    const loadRestockOrders = async () => {
+      try {
+        restockOrdersLoading.value = true
+        restockOrders.value = await api.getRestockOrders()
+      } catch (err) {
+        console.error('Failed to load restock orders:', err)
+      } finally {
+        restockOrdersLoading.value = false
+      }
+    }
+
     const getOrdersByStatus = (status) => {
       return orders.value.filter(order => order.status === status)
     }
@@ -153,13 +220,18 @@ export default {
       })
     }
 
-    onMounted(loadOrders)
+    onMounted(() => {
+      loadOrders()
+      loadRestockOrders()
+    })
 
     return {
       t,
       loading,
       error,
       orders,
+      restockOrdersLoading,
+      restockOrders,
       getOrdersByStatus,
       getOrderStatusClass,
       formatDate,
@@ -275,5 +347,12 @@ export default {
 .item-meta {
   font-size: 0.813rem;
   color: #64748b;
+}
+
+.empty-state {
+  color: #64748b;
+  font-size: 0.938rem;
+  text-align: center;
+  padding: 1.5rem 0;
 }
 </style>

@@ -3,9 +3,11 @@ export default {
   nav: {
     overview: '概要',
     inventory: '在庫',
+    restocking: '再発注',
     orders: '注文',
     finance: '財務',
     demandForecast: '需要予測',
+    reports: 'レポート',
     companyName: '触媒コンポーネンツ',
     subtitle: '在庫管理システム'
   },
@@ -112,6 +114,9 @@ export default {
     onTimeDelivery: '定時配達',
     itemsCount: '{count}件',
     quantity: '数量',
+    submittedOrders: '提出済み再発注',
+    noRestockOrders: 'まだ再発注は提出されていません。',
+    leadTimeDays: '{days}日',
     table: {
       orderNumber: '注文番号',
       orderId: '注文ID',
@@ -125,7 +130,10 @@ export default {
       totalValue: '合計金額',
       status: 'ステータス',
       expectedDelivery: '予定配達日',
-      actualDelivery: '実際の配達日'
+      actualDelivery: '実際の配達日',
+      leadTime: 'リードタイム / 配達予定',
+      submittedDate: '提出日',
+      totalCost: '合計コスト'
     }
   },
 
@@ -185,6 +193,36 @@ export default {
       change: '変化',
       trend: 'トレンド',
       period: '期間'
+    }
+  },
+
+  // Restocking
+  restocking: {
+    title: '再発注',
+    description: '需要予測に基づく再発注の推奨事項を確認し、予算内で注文を行います',
+    budgetLabel: '予算',
+    selectedTotal: '選択合計',
+    ofBudget: '予算に対して',
+    placeOrder: '注文する',
+    placingOrder: '注文処理中...',
+    newOrder: '別の注文を作成',
+    orderSuccess: '注文が正常に完了しました',
+    viewInOrders: '注文一覧で確認',
+    emptyState: '需要予測に基づき、現在再発注が必要な品目はありません。',
+    exceedsBudget: '選択合計が予算を超えています',
+    urgent: '緊急',
+    table: {
+      sku: 'SKU',
+      name: '品目名',
+      category: 'カテゴリ',
+      warehouse: '倉庫',
+      stock: '在庫数',
+      reorderPoint: '再注文点',
+      trend: 'トレンド',
+      forecastedDemand: '予測需要',
+      recommendedQuantity: '推奨数量',
+      unitCost: '単価',
+      subtotal: '小計'
     }
   },
 
@@ -352,6 +390,7 @@ export default {
     'Stepper Motor NEMA 23': 'ステッピングモータNEMA 23',
     'Drive Pulley': 'ドライブプーリー',
     'LED Driver IC': 'LEDドライバIC',
+    'Logic Controller Board': 'ロジックコントローラー基板',
     '5V 10A Switching Power Supply': '5V 10Aスイッチング電源',
     '12V 5A Power Supply Module': '12V 5A電源モジュール',
     '24V 3A Industrial Power Supply': '24V 3A産業用電源',

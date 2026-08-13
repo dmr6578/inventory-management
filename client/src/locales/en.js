@@ -3,9 +3,11 @@ export default {
   nav: {
     overview: 'Overview',
     inventory: 'Inventory',
+    restocking: 'Restocking',
     orders: 'Orders',
     finance: 'Finance',
     demandForecast: 'Demand Forecast',
+    reports: 'Reports',
     companyName: 'Catalyst Components',
     subtitle: 'Inventory Management System'
   },
@@ -112,6 +114,9 @@ export default {
     onTimeDelivery: 'On-Time Delivery',
     itemsCount: '{count} items',
     quantity: 'Qty',
+    submittedOrders: 'Submitted Orders',
+    noRestockOrders: 'No restocking orders have been placed yet.',
+    leadTimeDays: '{days} days',
     table: {
       orderNumber: 'Order Number',
       orderId: 'Order ID',
@@ -125,7 +130,10 @@ export default {
       totalValue: 'Total Value',
       status: 'Status',
       expectedDelivery: 'Expected Delivery',
-      actualDelivery: 'Actual Delivery'
+      actualDelivery: 'Actual Delivery',
+      leadTime: 'Lead Time / Delivery',
+      submittedDate: 'Submitted Date',
+      totalCost: 'Total Cost'
     }
   },
 
@@ -185,6 +193,36 @@ export default {
       change: 'Change',
       trend: 'Trend',
       period: 'Period'
+    }
+  },
+
+  // Restocking
+  restocking: {
+    title: 'Restocking',
+    description: 'Review demand-driven restock recommendations and place orders within budget',
+    budgetLabel: 'Budget',
+    selectedTotal: 'Selected Total',
+    ofBudget: 'of budget',
+    placeOrder: 'Place Order',
+    placingOrder: 'Placing Order...',
+    newOrder: 'Place Another Order',
+    orderSuccess: 'Order placed successfully',
+    viewInOrders: 'View in Orders',
+    emptyState: 'No items currently need restocking based on demand forecasts.',
+    exceedsBudget: 'Selected total exceeds budget',
+    urgent: 'Urgent',
+    table: {
+      sku: 'SKU',
+      name: 'Item Name',
+      category: 'Category',
+      warehouse: 'Warehouse',
+      stock: 'Stock on Hand',
+      reorderPoint: 'Reorder Point',
+      trend: 'Trend',
+      forecastedDemand: 'Forecasted Demand',
+      recommendedQuantity: 'Recommended Qty',
+      unitCost: 'Unit Cost',
+      subtotal: 'Subtotal'
     }
   },
 
